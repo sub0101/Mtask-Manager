@@ -15,6 +15,7 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,6 +47,7 @@ import com.example.todoapp.broadcast.TaskBroadcastReciever;
 import com.example.todoapp.database.Task;
 import com.example.todoapp.database.TaskViewModel;
 import com.example.todoapp.services.TaskService;
+import com.google.android.material.transition.platform.MaterialContainerTransform;
 
 
 import java.util.Calendar;
@@ -105,6 +107,7 @@ public class AddToDoFragment extends DialogFragment {
         super.onStart();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         setHasOptionsMenu(true);
+        dialog.getWindow().setWindowAnimations(com.google.android.material.R.style.Animation_Design_BottomSheetDialog);
 loadCategory();
 //        dialog = getDialog();
         Toolbar toolbar = dialog.findViewById(R.id.toolbar);
@@ -288,10 +291,8 @@ class DateandTimeField implements View.OnClickListener
             }
             if(v == add_category)
             {
-//                AddToDoFragment dialogFragment = new AddToDoFragment(r_view,customRecyclerAdapterPendingTask);
                 AddCategoryFragment addCategoryFragment = new AddCategoryFragment();
                 addCategoryFragment.show(getFragmentManager() , "Category Fragment");
-//                Log.d("called" , "called");
             }
         }
     }
@@ -300,30 +301,37 @@ class DateandTimeField implements View.OnClickListener
     void loadCategory()
     {
 
-
+        final int[] i = {0};
         viewModel.getAllCategory().observe(getViewLifecycleOwner(), new Observer<List<CategoryInfo>>() {
                 @Override
                 public void onChanged(List<CategoryInfo> categoryInfos) {
                     ChipGroup chipGroup2 = dialog.findViewById(R.id.chipGroup2);
-                    Drawable drawable = ChipDrawable.createFromAttributes(requireContext(), null, 0, com.google.android.material.R.style.Widget_MaterialComponents_Chip_Entry);
-
-                    Chip chip;
                     if(b)
                     {
                         for(CategoryInfo c: categoryInfos)
                         {
-                                chip = new Chip(dialog.getContext());
+                            Chip chip = new Chip(dialog.getContext());
+                            Drawable     drawable = ChipDrawable.createFromAttributes(requireContext(), null, 0, com.google.android.material.R.style.Widget_MaterialComponents_Chip_Filter);
 
                             chip.setText(c.getName());
+                            chip.setTag(c.getColor());
+                            chip.setId(i[0]);
+                            chip.setBackgroundColor(c.getColor());
                             chip.setChipDrawable((ChipDrawable) drawable);
                             chip.setTag(c.getName());
 
                             chipGroup2.addView(chip);
+                            i[0]+=1;
                         }
                         b=false;
                     }
                     else {
-                        chip = new Chip(dialog.getContext());
+                        Chip chip = new Chip(dialog.getContext());
+                        Drawable     drawable = ChipDrawable.createFromAttributes(requireContext(), null, 0, com.google.android.material.R.style.Widget_MaterialComponents_Chip_Filter);
+
+                        chip.setId(++i[0]);
+                        chip.setTag(categoryInfos.get(categoryInfos.size()-1).getColor());
+chip.setChipDrawable((ChipDrawable) drawable);
                         chip.setText(categoryInfos.get(categoryInfos.size()-1).getName());
                         chipGroup2.addView(chip);
 

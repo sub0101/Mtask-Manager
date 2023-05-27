@@ -42,12 +42,14 @@ public class AddCategoryFragment extends DialogFragment {
          super.onCreateView(inflater, container, savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(TaskViewModel.class);
          View view = inflater.inflate(R.layout.category_dialog , container ,false);
+
          return view;
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        dialog.getWindow().setWindowAnimations(com.google.android.material.R.style.Animation_Design_BottomSheetDialog);
         viewModel = new ViewModelProvider(requireActivity()).get(TaskViewModel.class);
         add_category =dialog.findViewById(R.id.addCategory);
         category_input = dialog.findViewById(R.id.category_name);
