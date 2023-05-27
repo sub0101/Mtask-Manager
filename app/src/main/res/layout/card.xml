@@ -6,50 +6,115 @@
     android:orientation="vertical">
 
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card"
-        android:layout_width="match_parent"
-        android:layout_height="200px"
-        android:layout_gravity="center"
-        app:cardElevation="5dp"
+<!--    <androidx.cardview.widget.CardView-->
+<!--        android:id="@+id/card"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="200px"-->
+<!--        android:layout_gravity="center"-->
+<!--        app:cardElevation="5dp"-->
+<!--        app:cardPreventCornerOverlap="true"-->
+<!--        app:cardUseCompatPadding="true">-->
 
-        app:cardPreventCornerOverlap="true"
-        app:cardUseCompatPadding="true">
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:background="@drawable/gradient_background"-->
+
+<!--            android:orientation="horizontal">-->
+
+<!--&lt;!&ndash;            <TextView&ndash;&gt;-->
+<!--&lt;!&ndash;                android:id="@+id/title"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_width="match_parent"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_weight="1"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:text="temp"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:textSize="16dp"&ndash;&gt;-->
+<!--&lt;!&ndash;android:paddingStart="5dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:textColor="@color/antique_white"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:fontFamily="sans-serif-medium"&ndash;&gt;-->
+<!--&lt;!&ndash;       />&ndash;&gt;-->
+
+<!--&lt;!&ndash;            <TextView&ndash;&gt;-->
+<!--&lt;!&ndash;                android:id="@+id/desc"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_width="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:text="temp"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_alignParentRight="true"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_margin="10px"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_centerInParent="true"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:fontFamily="sans-serif-medium"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:textSize="20px"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:textStyle="normal" />&ndash;&gt;-->
+<!--        </RelativeLayout>-->
+
+
+<!--    </androidx.cardview.widget.CardView>-->
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="8dp"
+app:cardBackgroundColor="@color/honeydew"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/white"
+        style="@style/Widget.App.CardView"
+
+        >
 
         <RelativeLayout
+            android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/gradient_background"
-
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="match_parent"
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/isCompleted"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="temp"
-                android:textSize="16dp"
-android:paddingStart="5dp"
-                android:textColor="@color/antique_white"
-                android:fontFamily="sans-serif-medium"
-       />
+            />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_toStartOf="@id/priority"
+                android:layout_toEndOf="@id/isCompleted"
+                android:layout_marginTop="12dp"
+                android:textSize="16sp"
+
+                />
+
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="temp"
-                android:layout_alignParentRight="true"
-                android:layout_margin="10px"
-                android:layout_centerInParent="true"
-                android:fontFamily="sans-serif-medium"
-                android:textSize="20px"
-                android:textStyle="normal" />
+                android:layout_below="@id/title"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_toStartOf="@id/priority"
+                android:layout_toEndOf="@id/isCompleted"
+                android:textColor="#808080"
+                android:textSize="13sp"
+                />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/priority"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="10dp"
+                android:textSize="11sp"
+
+                />
+
         </RelativeLayout>
-
-
-    </androidx.cardview.widget.CardView>
-
+    </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>

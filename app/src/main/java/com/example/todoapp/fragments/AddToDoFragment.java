@@ -1,5 +1,12 @@
 package com.example.todoapp.fragments;
 
+import com.example.todoapp.database.CategoryInfo;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipDrawable;
+import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import  com.google.android.material.transition.*;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -8,20 +15,28 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,37 +49,64 @@ import com.example.todoapp.services.TaskService;
 
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.Random;
 
 public class AddToDoFragment extends DialogFragment {
-    EditText txt_date, txt_time;
+    Chip txt_date, txt_time, add_category;
+    ChipGroup chipGroup;
     Calendar calendar;
+    TaskViewModel viewModel;
     int mDay, mMonth, mYear, mHour, mMinute;
-    ImageButton addTodoBtn;
-    CustomRecyclerAdapterPendingTask adapter;
-    RecyclerView recyclerView;
+    ExtendedFloatingActionButton addTodoBtn;
+//    CustomRecyclerAdapterPendingTask adapter;
+//    RecyclerView recyclerView;
     Dialog dialog;
-    public AddToDoFragment(RecyclerView r_view , CustomRecyclerAdapterPendingTask adapter)
+    boolean b=true;
+
+    public static  AddToDoFragment display(FragmentManager manager)
     {
-        this.adapter = adapter;
-        this.recyclerView = r_view;
+        AddToDoFragment addToDoFragment = new AddToDoFragment();
+        addToDoFragment.show(manager , "example");
+        return addToDoFragment;
+    }
+
+//    public AddToDoFragment(RecyclerView r_view , CustomRecyclerAdapterPendingTask adapter)
+//    {
+////        this.adapter = adapter;
+////        this.recyclerView = r_view;
+//    }
+//public AddToDoFragment()
+//{
+//
+//}
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(DialogFragment.STYLE_NORMAL , R.style.AppTheme_FullScreenDialog);
+
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        dialog = getDialog();
+        viewModel = new ViewModelProvider(requireActivity()).get(TaskViewModel.class);
         return inflater.inflate(R.layout.custom_dialog, container, false);
+
     }
 
 
     @Override
     public void onStart() {
         super.onStart();
-
-
-
-        dialog = getDialog();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        setHasOptionsMenu(true);
+loadCategory();
+//        dialog = getDialog();
         Toolbar toolbar = dialog.findViewById(R.id.toolbar);
         toolbar.setTitle("Add to Do");
         toolbar.setNavigationIcon(android.R.drawable.ic_menu_close_clear_cancel);
@@ -73,20 +115,36 @@ public class AddToDoFragment extends DialogFragment {
         });
         txt_date = dialog.findViewById(R.id.txt_date);
         txt_time = dialog.findViewById(R.id.txt_time);
+        add_category = dialog.findViewById(R.id.add_category);
+chipGroup = dialog.findViewById(R.id.chipGroup);
 
-        txt_date.setOnFocusChangeListener(new DateandTimeField());
-        txt_time.setOnFocusChangeListener(new DateandTimeField());
+        txt_date.setOnClickListener(new DateandTimeField());
+        txt_time.setOnClickListener(new DateandTimeField());
+
 
 //        end of date and time listner code
         addTodoBtn = dialog.findViewById(R.id.add_task);
         addTodoBtn.setOnClickListener(new ClickListener());
+        add_category.setOnClickListener(new ClickListener());
 
-        int width = ViewGroup.LayoutParams.MATCH_PARENT;
-        int height = ViewGroup.LayoutParams.MATCH_PARENT;
-        dialog.getWindow().setLayout(width, height);
+chipGroup.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        System.out.println("yes");
+    }
+});
+
 
     }
 
+//    @NonNull
+//    @Override
+//    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+//         dialog = super.onCreateDialog(savedInstanceState);
+//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        return dialog;
+//
+//    }
 
     private void setTime() {
         TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),
@@ -195,19 +253,27 @@ task.scheduleTask(getContext() , title.getText().toString());
 
 
 
-    class DateandTimeField implements View.OnFocusChangeListener {
+//    class DateandTimeField implements View.OnClickListener {
+//
+//        @Override
+//        public void onClick(View v, boolean hasFocus) {
+//            if (hasFocus) {
+//
+//                dateAndTimeFocused(v);
+//                v.clearFocus();
+//
+//            }
+//
+//        }
+//    }
+class DateandTimeField implements View.OnClickListener
+{
 
-        @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            if (hasFocus) {
-
-                dateAndTimeFocused(v);
-                v.clearFocus();
-
-            }
-
-        }
+    @Override
+    public void onClick(View v) {
+        dateAndTimeFocused(v);
     }
+}
 
 
     class ClickListener implements View.OnClickListener
@@ -220,9 +286,53 @@ task.scheduleTask(getContext() , title.getText().toString());
             {
                 addTask();
             }
+            if(v == add_category)
+            {
+//                AddToDoFragment dialogFragment = new AddToDoFragment(r_view,customRecyclerAdapterPendingTask);
+                AddCategoryFragment addCategoryFragment = new AddCategoryFragment();
+                addCategoryFragment.show(getFragmentManager() , "Category Fragment");
+//                Log.d("called" , "called");
+            }
         }
     }
 
 
+    void loadCategory()
+    {
 
+
+        viewModel.getAllCategory().observe(getViewLifecycleOwner(), new Observer<List<CategoryInfo>>() {
+                @Override
+                public void onChanged(List<CategoryInfo> categoryInfos) {
+                    ChipGroup chipGroup2 = dialog.findViewById(R.id.chipGroup2);
+                    Drawable drawable = ChipDrawable.createFromAttributes(requireContext(), null, 0, com.google.android.material.R.style.Widget_MaterialComponents_Chip_Entry);
+
+                    Chip chip;
+                    if(b)
+                    {
+                        for(CategoryInfo c: categoryInfos)
+                        {
+                                chip = new Chip(dialog.getContext());
+
+                            chip.setText(c.getName());
+                            chip.setChipDrawable((ChipDrawable) drawable);
+                            chip.setTag(c.getName());
+
+                            chipGroup2.addView(chip);
+                        }
+                        b=false;
+                    }
+                    else {
+                        chip = new Chip(dialog.getContext());
+                        chip.setText(categoryInfos.get(categoryInfos.size()-1).getName());
+                        chipGroup2.addView(chip);
+
+                    }
+
+                }
+            });
+    }
 }
+
+
+

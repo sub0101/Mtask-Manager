@@ -45,11 +45,8 @@ int id = intent.getIntExtra("id" ,-1);
         System.out.println(id);
         task = repositry.getTask(id);
       if(id!=-1  && task!=null){
-
           System.out.println(id +  "  " +repositry.getTask(id).getTitle());
-          repositry.delete(task);
-
-
+//          repositry.delete(task);
       }
         Intent intent1 = new Intent(context, TaskService.class);
         intent1.putExtra("taskTitle" , title);

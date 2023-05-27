@@ -8,17 +8,18 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-public class TaskViewModel extends AndroidViewModel {
+public class TaskViewModel extends AndroidViewModel  {
 
    private  TaskRepositry repositry;
    private LiveData<List<Task>> alltask;
 
-
+private LiveData<List<CategoryInfo>> allCategory;
 
     public TaskViewModel(@NonNull Application application) {
         super(application);
         repositry = new TaskRepositry(application);
         alltask = repositry.getAllTask();
+        allCategory = repositry.getAllCategory();
     }
 
 
@@ -26,6 +27,11 @@ public class TaskViewModel extends AndroidViewModel {
       repositry.insert(model);
 
     }
+    public void insertCategory(CategoryInfo categoryInfo)
+    {
+        repositry.insertCategory(categoryInfo);
+    }
+
 
     public void update(Task model){repositry.update(model);}
 
@@ -35,7 +41,8 @@ public class TaskViewModel extends AndroidViewModel {
         return repositry.getAllTask();
     }
 
-
+public LiveData<List<CategoryInfo>> getAllCategory(){return repositry.getAllCategory();
+    }
 
     public  void deleteAllTask(){
 

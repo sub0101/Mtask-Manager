@@ -1,5 +1,11 @@
 <resources>
-    <string name="app_name">To Do App</string>
+    <string name="app_name">Mtask Manager</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="low">Low</string>
+    <string name="add_task">add_task</string>
+    <string name="add_category" > Add Cateogry </string>
+    <string name="enter_category">Enter Category</string>
+    <string name="category_color">Category Color\n</string>
+    <string name="add_color">Choose Color\n</string>
 </resources>

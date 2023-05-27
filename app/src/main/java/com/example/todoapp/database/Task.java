@@ -33,9 +33,17 @@ public class  Task {
 //    String description;
    int hour , minute,alarmid;
    int day,month , year;
-   Boolean done;
+   Boolean status;
 
-public  Task()
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    public  Task()
 {
 
 }
@@ -48,7 +56,7 @@ public  Task()
         this.day = day;
         this.month = month ;
         this.year =year;
-        done =false;
+        status =false;
     }
 
     public int getAlarmid() {
@@ -116,14 +124,14 @@ public  Task()
         if (calendar.getTimeInMillis() <= System.currentTimeMillis()) {
             calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1);
         }
-        int time = (int) (20*(1500)+ System.currentTimeMillis());
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP , time , alarmPendingIntent);
+//        int time = (int) (20*(1500)+ System.currentTimeMillis());
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP , calendar.getTimeInMillis() , alarmPendingIntent);
     }
 
     public void cancelAlarm(Context context)
     {
         Intent intentService = new Intent( context, TaskBroadcastReciever.class);
-        PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(context, this.getAlarmid(), intentService, 0);
+        PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(context, this.getAlarmid(), intentService, PendingIntent.FLAG_IMMUTABLE);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(alarmPendingIntent);
 

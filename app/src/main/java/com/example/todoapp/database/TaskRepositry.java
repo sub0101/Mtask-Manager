@@ -13,18 +13,21 @@ public class TaskRepositry
 {
     private TaskDao  dao;
     private LiveData<List<Task>> alltask;
+    private LiveData<List<CategoryInfo>> allCategory;
 
     public TaskRepositry(Application application)
     {
         TaskDatabase database = TaskDatabase.getInstance(application);
         dao = database.Dao();
         this.alltask =  dao.getAllTask();
+        this.allCategory = dao.getAllCategory();
     }
 
     public void   insert(Task model) {
        new InsertTaskAsyncTask(dao).execute(model);
     }
 
+    public void insertCategory(CategoryInfo categoryInfo){ new InsertCategoryAsyncTask(dao).execute(categoryInfo); }
 public Task getTask(int id){
         AsyncTask<Integer, Void, Task> task = new GetTask(dao).execute(id);
         Task task1=null;
@@ -137,6 +140,22 @@ public Task getTask(int id){
     public  LiveData<List<Task>> getAllTask()
     {
         return alltask;
+    }
+
+    public LiveData<List<CategoryInfo>> getAllCategory(){return  allCategory; }
+
+    private static  class InsertCategoryAsyncTask extends AsyncTask<CategoryInfo,Void,Void>
+    {
+TaskDao dao;
+        public InsertCategoryAsyncTask(TaskDao dao) {
+            this.dao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(CategoryInfo... categoryInfos) {
+            dao.insertCategory(categoryInfos[0]);
+            return null;
+        }
     }
 
 

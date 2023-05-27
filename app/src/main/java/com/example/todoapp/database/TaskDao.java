@@ -33,6 +33,13 @@ public  interface  TaskDao {
     @Query("DELETE FROM task")
     void deleteAllTask();
 
+    @Insert
+    long  insertCategory(CategoryInfo category);
+
+    @Query("SELECT * FROM categoryInfo")
+
+    LiveData<List<CategoryInfo>> getAllCategory();
+
 
 
 

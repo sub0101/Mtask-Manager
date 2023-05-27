@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<com.google.android.material.card.MaterialCardView
+    xmlns:android=  "http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/category_card"
+        android:layout_width="150dp"
+    android:layout_margin = "10dp"
+    style="@style/Widget.Material3.CardView.Elevated"
+        android:layout_height="100dp"
+    app:strokeWidth="1dp"
+android:outlineSpotShadowColor="@color/beige"
+
+    >
+<TextView
+    android:id="@+id/number_task"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Total task : 1"
+    android:layout_margin="10dp"
+    android:textColor="@color/alice_blue"
+    />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+
+        >
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Category Name"
+            app:fontFamily="sans-serif-medium"
+            android:textAllCaps="true"
+            android:textSize="20dp"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            />
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
+

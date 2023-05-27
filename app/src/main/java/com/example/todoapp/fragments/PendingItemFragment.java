@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.todoapp.MainActivity;
 import com.example.todoapp.R;
 import com.example.todoapp.adapters.CustomRecyclerAdapterPendingTask;
 import com.example.todoapp.database.Task;
@@ -90,8 +91,12 @@ public class PendingItemFragment extends Fragment {
 
         Intent intent = new Intent(getContext(), TaskService.class);
         this.getContext().stopService(intent);
-        AddToDoFragment dialogFragment = new AddToDoFragment(r_view,customRecyclerAdapterPendingTask);
-        dialogFragment.show(getParentFragmentManager(), "My  Fragment");
+                MainActivity mainActivity  = (MainActivity) getActivity();
+
+        AddToDoFragment.display(mainActivity.getSupportFragmentManager());
+//        AddToDoFragment dialogFragment = new AddToDoFragment(r_view,customRecyclerAdapterPendingTask);
+//        dialogFragment.show(mainActivity.getSupportFragmentManager(), "My  Fragment");
+
 
 
     }

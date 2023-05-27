@@ -2,8 +2,11 @@ package com.example.todoapp;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,10 +15,17 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelStoreOwner;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.todoapp.adapters.CategoryAdapter;
+import com.example.todoapp.database.CategoryInfo;
 import com.example.todoapp.database.Task;
 import com.example.todoapp.database.TaskViewModel;
 import com.example.todoapp.fragments.HomeFragment;
@@ -23,6 +33,7 @@ import com.example.todoapp.fragments.PendingItemFragment;
 import com.example.todoapp.fragments.PofileFragment;
 import com.example.todoapp.fragments.SettingFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.ArrayList;
@@ -32,8 +43,11 @@ public class MainActivity extends AppCompatActivity {
     Fragment currrent_fragment;
     HomeFragment homeFragment;
     PofileFragment profileFragment;
+    MaterialCardView materialCardView;
     SettingFragment settingFragment;
     boolean flag;
+    List<CategoryInfo> categoryInfos;
+    RecyclerView category_recycler;
     TaskViewModel viewModel;
 
     int prev_id;
@@ -45,12 +59,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        viewModel = new ViewModelProvider( this).get(TaskViewModel.class);
+
 
         setContentView(R.layout.activity_main);
         bottomNavigation = findViewById(R.id.bottom_navigation);
+        category_recycler = findViewById(R.id.category_container);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("ToolBar");
+        getSupportActionBar().setTitle("Mtask Manager");
 //        toolbar.setBackgroundColor(getResources().getColor(R.color.dark_slate_gray));
         flag = true;
         homeFragment = new HomeFragment();
@@ -63,8 +80,20 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager.beginTransaction().add(R.id.container, profileFragment).hide(profileFragment).commit();
         bottomNavigation.setOnItemSelectedListener(new OnBottomNavigationItemListner());
         bottomNavigation.setSelectedItemId(R.id.home);
+        categoryInfos = new ArrayList<>();
+        categoryInfos  = viewModel.getAllCategory().getValue();
+        CategoryAdapter categoryAdapter = new CategoryAdapter( categoryInfos);
+        category_recycler.setAdapter(categoryAdapter);
+        category_recycler.setLayoutManager(new LinearLayoutManager(this , LinearLayoutManager.HORIZONTAL , false));
+viewModel.getAllCategory().observe(this, new Observer<List<CategoryInfo>>() {
+    @Override
+    public void onChanged(List<CategoryInfo> categoryInfo) {
+        categoryInfos = categoryInfo;
+        categoryAdapter.updateSet(categoryInfos);
+        categoryAdapter.notifyItemInserted(categoryInfo.size());
 
-
+    }
+});
     }
 
 
@@ -80,6 +109,11 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
         Log.i("main activity", "stoped");
 
+    }
+
+    TaskViewModel getViewModel()
+    {
+        return viewModel;
     }
 
     private class OnBottomNavigationItemListner implements NavigationBarView.OnItemSelectedListener {
@@ -147,6 +181,9 @@ public class MainActivity extends AppCompatActivity {
 System.out.println("deleted all task");
         super.onDestroy();
     }
+
+
+
 }
 
 
