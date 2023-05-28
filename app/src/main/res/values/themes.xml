@@ -13,7 +13,7 @@
 <!--        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>-->
 <!--        &lt;!&ndash; Customize your theme here. &ndash;&gt;-->
 <!--    </style>-->
-    <style name="Theme.ToDoApp" parent="Theme.Material3.Dark.NoActionBar">
+    <style name="Theme.ToDoApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>

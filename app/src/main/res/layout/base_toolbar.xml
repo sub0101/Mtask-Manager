@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.appcompat.widget.Toolbar xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="MissingPrefix"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/toolbar"
-android:backgroundTint="@color/dark_slate_blue"
-    android:minHeight="?attr/actionBarSize"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
 
-</androidx.appcompat.widget.Toolbar>
+<com.google.android.material.appbar.AppBarLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:navigationContentDescription="ClickHere"
+
+        />
+
+</com.google.android.material.appbar.AppBarLayout>
+
+
+
+

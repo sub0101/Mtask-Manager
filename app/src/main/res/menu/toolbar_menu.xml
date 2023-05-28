@@ -3,22 +3,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group >
-
+    <group android:checkableBehavior="single">
         <item
-            android:id="@+id/settingoption"
+            android:id="@+id/nav_camera"
+
+            android:title="Import" />
+        <item
+            android:id="@+id/nav_gallery"
+            android:title="Gallery" />
+        <item
+            android:id="@+id/nav_setting"
             android:title="Setting" />
+        <item
+            android:id="@+id/nav_tool"
+            android:title="Tools" />
     </group>
 
-<!--    <item android:title="Communicate">-->
-<!--        <menu>-->
-<!--            <item-->
-<!--                android:id="@+id/nav_share"-->
-<!--                android:title="Share" />-->
-<!--            <item-->
-<!--                android:id="@+id/nav_send"-->
-<!--                android:title="Send" />-->
-<!--        </menu>-->
-<!--    </item>-->
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:title="Share" />
+            <item
+                android:id="@+id/nav_send"
+                android:title="Send" />
+        </menu>
+    </item>
 
 </menu>
