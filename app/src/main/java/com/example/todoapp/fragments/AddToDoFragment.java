@@ -300,37 +300,44 @@ class DateandTimeField implements View.OnClickListener
     void loadCategory()
     {
 
-
+        final int[] i = {0};
         viewModel.getAllCategory().observe(getViewLifecycleOwner(), new Observer<List<CategoryInfo>>() {
-                @Override
-                public void onChanged(List<CategoryInfo> categoryInfos) {
-                    ChipGroup chipGroup2 = dialog.findViewById(R.id.chipGroup2);
-                    Drawable drawable = ChipDrawable.createFromAttributes(requireContext(), null, 0, com.google.android.material.R.style.Widget_MaterialComponents_Chip_Entry);
-
-                    Chip chip;
-                    if(b)
+            @Override
+            public void onChanged(List<CategoryInfo> categoryInfos) {
+                ChipGroup chipGroup2 = dialog.findViewById(R.id.chipGroup2);
+                if(b)
+                {
+                    for(CategoryInfo c: categoryInfos)
                     {
-                        for(CategoryInfo c: categoryInfos)
-                        {
-                                chip = new Chip(dialog.getContext());
+                        Chip chip = new Chip(dialog.getContext());
+                        Drawable     drawable = ChipDrawable.createFromAttributes(requireContext(), null, 0, com.google.android.material.R.style.Widget_MaterialComponents_Chip_Filter);
 
-                            chip.setText(c.getName());
-                            chip.setChipDrawable((ChipDrawable) drawable);
-                            chip.setTag(c.getName());
+                        chip.setText(c.getName());
+                        chip.setTag(c.getColor());
+                        chip.setId(i[0]);
+                        chip.setBackgroundColor(c.getColor());
+                        chip.setChipDrawable((ChipDrawable) drawable);
+                        chip.setTag(c.getName());
 
-                            chipGroup2.addView(chip);
-                        }
-                        b=false;
-                    }
-                    else {
-                        chip = new Chip(dialog.getContext());
-                        chip.setText(categoryInfos.get(categoryInfos.size()-1).getName());
                         chipGroup2.addView(chip);
-
+                        i[0]+=1;
                     }
+                    b=false;
+                }
+                else {
+                    Chip chip = new Chip(dialog.getContext());
+                    Drawable     drawable = ChipDrawable.createFromAttributes(requireContext(), null, 0, com.google.android.material.R.style.Widget_MaterialComponents_Chip_Filter);
+
+                    chip.setId(++i[0]);
+                    chip.setTag(categoryInfos.get(categoryInfos.size()-1).getColor());
+                    chip.setChipDrawable((ChipDrawable) drawable);
+                    chip.setText(categoryInfos.get(categoryInfos.size()-1).getName());
+                    chipGroup2.addView(chip);
 
                 }
-            });
+
+            }
+        });
     }
 }
 
