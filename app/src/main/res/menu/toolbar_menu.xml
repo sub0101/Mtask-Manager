@@ -5,28 +5,26 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/menu_home"
 
-            android:title="Import" />
+            android:title="Home" />
         <item
-            android:id="@+id/nav_gallery"
-            android:title="Gallery" />
+            android:id="@+id/menu_CompleteTask"
+            android:title="Complete Task" />
         <item
-            android:id="@+id/nav_setting"
-            android:title="Setting" />
-        <item
-            android:id="@+id/nav_tool"
-            android:title="Tools" />
+            android:id="@+id/menu_category"
+            android:title="Category" />
+
     </group>
 
     <item android:title="Communicate">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:title="Share" />
+                android:id="@+id/menu_setting"
+                android:title="Setting" />
             <item
-                android:id="@+id/nav_send"
-                android:title="Send" />
+                android:id="@+id/menu_share"
+                android:title="Share" />
         </menu>
     </item>
 

@@ -42,7 +42,7 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     Fragment currrent_fragment;
     HomeFragment homeFragment;
     PofileFragment profileFragment;
@@ -52,32 +52,22 @@ public class MainActivity extends AppCompatActivity {
     List<CategoryInfo> categoryInfos;
     RecyclerView category_recycler;
     TaskViewModel viewModel;
-
+    DrawerLayout drawer;
+Toolbar toolbar;
     int prev_id;
     private String ROOT_FRAGMENT_TAG = "root_fragment";
     FragmentTransaction ft;
     FragmentManager fragmentManager;
     BottomNavigationView bottomNavigation;
-
+Fragment fragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = new ViewModelProvider( this).get(TaskViewModel.class);
-
-
         setContentView(R.layout.activity_main);
-        Toolbar toolbar =  findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("ToolBar");
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-//                this, drawer, toolbar, R.string.navigation, R.string.navigation_c);
-//        drawer.addDrawerListener(toggle);
-//        toggle.syncState();
-//        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
-//        navigationView.setNavigationItemSelectedListener(this);
-//
-//        navigationView.setCheckedItem(R.id.navigation);
+
+        viewModel = new ViewModelProvider( this).get(TaskViewModel.class);
+setTool_drawer();
+
 
 //        bottomNavigation = findViewById(R.id.bottom_navigation);
 //        category_recycler = findViewById(R.id.category_container);
@@ -111,6 +101,20 @@ public class MainActivity extends AppCompatActivity {
 //    }
 //});
     }
+    void setTool_drawer()
+    {
+        toolbar =  findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("ToolBar");
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.open, R.string.close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
+        navigationView.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) this);
+        navigationView.setCheckedItem(R.id.navigation);
+    }
 
 
     @Override
@@ -125,6 +129,19 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
         Log.i("main activity", "stoped");
 
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.menu_home: System.out.println("home");
+            case R.id.menu_category:
+            case R.id.menu_CompleteTask:
+            case R.id.menu_setting:
+            case R.id.menu_share:
+        }
+        return true;
     }
 
 //    TaskViewModel getViewModel()
