@@ -310,6 +310,7 @@ class DateandTimeField implements View.OnClickListener
                     {
                         for(CategoryInfo c: categoryInfos)
                         {
+                            System.out.println("hello this is suraj");
                             Chip chip = new Chip(dialog.getContext());
                             Drawable     drawable = ChipDrawable.createFromAttributes(requireContext(), null, 0, com.google.android.material.R.style.Widget_MaterialComponents_Chip_Filter);
 
