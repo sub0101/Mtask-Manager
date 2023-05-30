@@ -9,19 +9,24 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.todoapp.R;
 import com.example.todoapp.database.Task;
+import com.example.todoapp.database.TaskViewModel;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 
 public class CustomRecyclerAdapterPendingTask extends ListAdapter<Task,  CustomRecyclerAdapterPendingTask.ViewHolder> {
 
     private Context context;
-
+TaskViewModel viewModel;
     public CustomRecyclerAdapterPendingTask() {
         super(DIFF_CALLBACK);
     }
@@ -45,6 +50,7 @@ System.out.println(oldItem.getId() + " "+newItem.getId());
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 context = parent.getContext();
+viewModel = new ViewModelProvider((ViewModelStoreOwner) parent.getContext()).get(TaskViewModel.class);
       View viewHolder =  LayoutInflater.from(parent.getContext()).inflate( R.layout.card ,parent,false);
         return new ViewHolder(viewHolder);
     }
@@ -57,7 +63,7 @@ context = parent.getContext();
 String time = getFixTime(model.getHour()  , model.getMinute()) + "\n" + date  ;
         holder.getRemark_textview().setText(time);
         holder.getTitle_textview().setText( model.getTitle().toUpperCase());
-
+        holder.materialCardView.setStrokeColor(viewModel.getCategory(model.getCategory()).getColor());
         animate(holder.itemView , position);
 
     }
@@ -69,12 +75,15 @@ String time = getFixTime(model.getHour()  , model.getMinute()) + "\n" + date  ;
     public static class ViewHolder extends RecyclerView.ViewHolder
     {
         private TextView title_textview  , remark_textview;
+        MaterialCardView materialCardView ;
 
         public ViewHolder(@NonNull View itemView) {
 
             super(itemView);
             title_textview = itemView.findViewById(R.id.title);
             remark_textview = itemView.findViewById(R.id.desc);
+            materialCardView = itemView.findViewById(R.id.cardView);
+
         }
 
         public void setRemark_textview(TextView remark_textview) {

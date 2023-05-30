@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -30,6 +31,7 @@ import com.example.todoapp.adapters.CategoryAdapter;
 import com.example.todoapp.database.CategoryInfo;
 import com.example.todoapp.database.Task;
 import com.example.todoapp.database.TaskViewModel;
+import com.example.todoapp.fragments.CompletedItemFragment;
 import com.example.todoapp.fragments.HomeFragment;
 import com.example.todoapp.fragments.PendingItemFragment;
 import com.example.todoapp.fragments.PofileFragment;
@@ -58,48 +60,19 @@ Toolbar toolbar;
     private String ROOT_FRAGMENT_TAG = "root_fragment";
     FragmentTransaction ft;
     FragmentManager fragmentManager;
-    BottomNavigationView bottomNavigation;
+
 Fragment fragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         viewModel = new ViewModelProvider( this).get(TaskViewModel.class);
-setTool_drawer();
+        fragmentManager = getSupportFragmentManager();
+        setTool_drawer();
+        loadCategory();
 
 
-//        bottomNavigation = findViewById(R.id.bottom_navigation);
-//        category_recycler = findViewById(R.id.category_container);
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().setTitle("Mtask Manager");
-////        toolbar.setBackgroundColor(getResources().getColor(R.color.dark_slate_gray));
-//        flag = true;
-//        homeFragment = new HomeFragment();
-//        settingFragment = new SettingFragment();
-//        profileFragment = new PofileFragment();
-//        currrent_fragment = homeFragment;
-//        fragmentManager = getSupportFragmentManager();
-//        fragmentManager.beginTransaction().add(R.id.container, homeFragment).commit();
-//        fragmentManager.beginTransaction().add(R.id.container, settingFragment).hide(settingFragment).commit();
-//        fragmentManager.beginTransaction().add(R.id.container, profileFragment).hide(profileFragment).commit();
-//        bottomNavigation.setOnItemSelectedListener(new OnBottomNavigationItemListner());
-//        bottomNavigation.setSelectedItemId(R.id.home);
-//        categoryInfos = new ArrayList<>();
-//        categoryInfos  = viewModel.getAllCategory().getValue();
-//        CategoryAdapter categoryAdapter = new CategoryAdapter( categoryInfos);
-//        category_recycler.setAdapter(categoryAdapter);
-//        category_recycler.setLayoutManager(new LinearLayoutManager(this , LinearLayoutManager.HORIZONTAL , false));
-//viewModel.getAllCategory().observe(this, new Observer<List<CategoryInfo>>() {
-//    @Override
-//    public void onChanged(List<CategoryInfo> categoryInfo) {
-//        categoryInfos = categoryInfo;
-//        categoryAdapter.updateSet(categoryInfos);
-//        categoryAdapter.notifyItemInserted(categoryInfo.size());
-//
-//    }
-//});
+
     }
     void setTool_drawer()
     {
@@ -112,10 +85,29 @@ setTool_drawer();
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
-        navigationView.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) this);
+        navigationView.setNavigationItemSelectedListener( this);
         navigationView.setCheckedItem(R.id.navigation);
     }
 
+void loadCategory()
+{
+    category_recycler = findViewById(R.id.category_container);
+
+    categoryInfos = new ArrayList<>();
+    categoryInfos  = viewModel.getAllCategory().getValue();
+    CategoryAdapter categoryAdapter = new CategoryAdapter( categoryInfos);
+    category_recycler.setAdapter(categoryAdapter);
+    category_recycler.setLayoutManager(new LinearLayoutManager(this , LinearLayoutManager.HORIZONTAL , false));
+    viewModel.getAllCategory().observe(this, new Observer<List<CategoryInfo>>() {
+        @Override
+        public void onChanged(List<CategoryInfo> categoryInfo) {
+            categoryInfos = categoryInfo;
+            categoryAdapter.updateSet(categoryInfos);
+            categoryAdapter.notifyItemInserted(categoryInfo.size());
+
+        }
+    });
+}
 
     @Override
     protected void onStart() {
@@ -135,16 +127,28 @@ setTool_drawer();
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId())
         {
-            case R.id.menu_home: System.out.println("home");
-            case R.id.menu_category:
-            case R.id.menu_CompleteTask:
-            case R.id.menu_setting:
-            case R.id.menu_share:
+            case R.id.menu_home: fragment = new  PendingItemFragment();break;
+            case R.id.menu_category   : fragment = new Fragment();break;
+            case R.id.menu_CompleteTask : fragment = new CompletedItemFragment();break;
+            case R.id.menu_setting: fragment = new SettingFragment();break;
+            case R.id.menu_share: fragment = new PofileFragment();break;
+
         }
+
+        fragmentManager.beginTransaction().replace(R.id.container,fragment).commit();
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
         return true;
+
     }
 
-//    TaskViewModel getViewModel()
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        fragmentManager.beginTransaction().replace(R.id.container  , new PendingItemFragment()).commit();
+return  true;
+    }
+    //    TaskViewModel getViewModel()
 //    {
 //        return viewModel;
 //    }

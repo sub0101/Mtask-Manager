@@ -40,7 +40,8 @@ public  interface  TaskDao {
 
     LiveData<List<CategoryInfo>> getAllCategory();
 
-
+@Query("SELECT * FROM categoryInfo WHERE name = :n ")
+     CategoryInfo getCategory(String n);
 
 
 

@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.todoapp.MainActivity;
 import com.example.todoapp.R;
 import com.example.todoapp.adapters.CustomRecyclerAdapterPendingTask;
+import com.example.todoapp.database.CategoryInfo;
 import com.example.todoapp.database.Task;
 import com.example.todoapp.database.TaskViewModel;
 import com.example.todoapp.services.TaskService;
@@ -36,7 +37,7 @@ public class PendingItemFragment extends Fragment {
     RecyclerView r_view , complete_recyclerView;
     CustomRecyclerAdapterPendingTask   customRecyclerAdapterPendingTask;
 
-
+List<CategoryInfo> list_category ;
 
     public PendingItemFragment() {
     }
@@ -54,11 +55,7 @@ public class PendingItemFragment extends Fragment {
         this.context = getContext();
         viewModel = ViewModelProviders.of((FragmentActivity) context).get(TaskViewModel.class);
 
-//        for(int i=0;i<20;i++)
-//
-//        {
-//            viewModel.insert(new Task("thi is" , i+"chodu aman"));
-//        }
+
         r_view = view.findViewById(R.id.card_recycle_view);
        customRecyclerAdapterPendingTask = new CustomRecyclerAdapterPendingTask();
 
@@ -80,6 +77,12 @@ public class PendingItemFragment extends Fragment {
             @Override
             public void onChanged(List<Task> models) {
                 customRecyclerAdapterPendingTask.submitList(models);
+            }
+        });
+        viewModel.getAllCategory().observe(getViewLifecycleOwner(), new Observer<List<CategoryInfo>>() {
+            @Override
+            public void onChanged(List<CategoryInfo> categoryInfos) {
+                list_category = categoryInfos;
             }
         });
         enableSlideToDelete();

@@ -54,6 +54,7 @@ return new ViewHolder(viewholder);
             @Override
             public void onClick(View v) {
                 MaterialCardView card = (MaterialCardView) v;
+                card.setElevation(100);
                 System.out.println(card.getStrokeColor());
             }
         });

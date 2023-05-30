@@ -8,26 +8,42 @@
     android:id="@+id/drawer_layout"
     android:layout_gravity="center"
     android:fitsSystemWindows="true"
-    tools:openDrawer="start"
     tools:context=".MainActivity">
 
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/base_toolbar"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/category_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+android:paddingLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_centerInParent="true" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textFontWeight="@integer/material_motion_duration_long_2"
+        android:text="Pending Task" />
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+</LinearLayout>
 
 
-        <include layout="@layout/base_toolbar"/>
 
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/category_container"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_below="@+id/appbar"-->
-<!--        android:layout_centerInParent="true" />-->
-  <FrameLayout
-      android:id="@+id/container"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:layout_below="@+id/category_container"
-      android:layout_above="@+id/bottom_navigation"
-      />
+
+
+
+
 
 <!--<com.google.android.material.bottomnavigation.BottomNavigationView-->
 <!--    android:id="@+id/bottom_navigation"-->

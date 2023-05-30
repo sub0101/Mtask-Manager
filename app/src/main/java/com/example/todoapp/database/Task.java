@@ -32,7 +32,8 @@ public class  Task {
 //
 //    String description;
    int hour , minute,alarmid;
-   int day,month , year;
+   int day,month , year,periority ;
+   String category;
    Boolean status;
 
     public Boolean getStatus() {
@@ -48,7 +49,7 @@ public class  Task {
 
 }
 
-    public Task( int  id , String title , int hour,int minute , int day , int month ,int year){
+    public Task( int  id , String title , int hour,int minute , int day , int month ,int year  ,int cat_id , String category){
         this.alarmid = id;
         this.title = title;
         this.hour = hour;
@@ -56,7 +57,26 @@ public class  Task {
         this.day = day;
         this.month = month ;
         this.year =year;
+this.periority = periority;
+this.category  = category;
         status =false;
+    }
+
+    public int getPeriority() {
+        return periority;
+    }
+
+    public void setPeriority(int periority) {
+        this.periority = periority;
+    }
+
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public int getAlarmid() {

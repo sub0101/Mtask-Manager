@@ -58,6 +58,43 @@ public Task getTask(int id){
         new DeleteAllTaskAsyncTask(dao).execute();
     }
 
+    public CategoryInfo getCategory(String name){
+        AsyncTask<String, Void, CategoryInfo> cat = new GetCategoryAsyncTask(dao).execute(name);
+        Task task1=null;
+        CategoryInfo categoryInfo=null;
+        try
+        {
+            categoryInfo = cat.get();
+        }
+        catch (Exception e)
+        {
+
+        }
+        return  categoryInfo;    }
+
+
+    public static class GetCategoryAsyncTask  extends AsyncTask<String  , Void,CategoryInfo>
+{
+    TaskDao dao;
+    public GetCategoryAsyncTask(TaskDao
+                                dao) {
+        this.dao = dao;
+    }
+
+    @Override
+    protected CategoryInfo doInBackground(String... name) {
+       return dao.getCategory(name[0]);
+    }
+}
+
+
+
+
+
+
+
+
+
     private static class InsertTaskAsyncTask extends AsyncTask<Task, Void, Void> {
         private TaskDao dao;
 

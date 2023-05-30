@@ -11,10 +11,11 @@
         />
 
     <LinearLayout
+
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/base_appbar"
 
         android:orientation="vertical">
 

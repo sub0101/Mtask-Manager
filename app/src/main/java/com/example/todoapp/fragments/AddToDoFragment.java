@@ -54,13 +54,13 @@ import java.util.Random;
 
 public class AddToDoFragment extends DialogFragment {
     Chip txt_date, txt_time, add_category;
-    ChipGroup chipGroup;
+    ChipGroup chipGroup,chipGroup2;
     Calendar calendar;
     TaskViewModel viewModel;
     int mDay, mMonth, mYear, mHour, mMinute;
+    int periority =0;
+    String cat_id ="";
     ExtendedFloatingActionButton addTodoBtn;
-//    CustomRecyclerAdapterPendingTask adapter;
-//    RecyclerView recyclerView;
     Dialog dialog;
     boolean b=true;
 
@@ -71,15 +71,6 @@ public class AddToDoFragment extends DialogFragment {
         return addToDoFragment;
     }
 
-//    public AddToDoFragment(RecyclerView r_view , CustomRecyclerAdapterPendingTask adapter)
-//    {
-////        this.adapter = adapter;
-////        this.recyclerView = r_view;
-//    }
-//public AddToDoFragment()
-//{
-//
-//}
 
 
     @Override
@@ -106,7 +97,6 @@ public class AddToDoFragment extends DialogFragment {
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         setHasOptionsMenu(true);
 loadCategory();
-//        dialog = getDialog();
         Toolbar toolbar = dialog.findViewById(R.id.toolbar);
         toolbar.setTitle("Add to Do");
         toolbar.setNavigationIcon(android.R.drawable.ic_menu_close_clear_cancel);
@@ -116,26 +106,58 @@ loadCategory();
         txt_date = dialog.findViewById(R.id.txt_date);
         txt_time = dialog.findViewById(R.id.txt_time);
         add_category = dialog.findViewById(R.id.add_category);
-chipGroup = dialog.findViewById(R.id.chipGroup);
+        chipGroup = dialog.findViewById(R.id.chipGroup);
+        chipGroup2 =dialog.findViewById(R.id.chipGroup2);
 
         txt_date.setOnClickListener(new DateandTimeField());
         txt_time.setOnClickListener(new DateandTimeField());
-
-
-//        end of date and time listner code
         addTodoBtn = dialog.findViewById(R.id.add_task);
         addTodoBtn.setOnClickListener(new ClickListener());
         add_category.setOnClickListener(new ClickListener());
+        chipGroup.setOnCheckedStateChangeListener(new ChangedListner());
+        chipGroup2.setOnCheckedStateChangeListener(new ChangedListner());
 
-chipGroup.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        System.out.println("yes");
+
+
+
+
+
     }
-});
+    class ChangedListner implements ChipGroup.OnCheckedStateChangeListener
+    {
+        @Override
+        public void onCheckedChanged(@NonNull ChipGroup group, @NonNull List<Integer> checkedIds) {
 
 
+            Chip  chip;
+            if(group == chipGroup)
+            {
+                if(checkedIds.size()==0){periority=0; return;}
+
+                chip  = group.findViewById(checkedIds.get(0));
+                String name = (String) chip.getText();
+                name= name.trim();
+                if(name.equals("Low"))
+                {
+                    periority=1;
+                }
+                else if(name.equals("Medium")){
+
+                    periority  =2;}
+                else if(name.equals("High")){
+                    periority=3;}
+            }
+
+          else   if(group == chipGroup2)
+            {
+                if(checkedIds.size()==0  ) {cat_id="";return;}
+                chip = group.findViewById(checkedIds.get(0));
+        cat_id = chip.getText().toString().trim();
+
+            }
+        }
     }
+
 
 //    @NonNull
 //    @Override
@@ -213,6 +235,7 @@ chipGroup.setOnClickListener(new View.OnClickListener() {
             mYear = calendar.get(Calendar.YEAR);
             mMonth = calendar.get(Calendar.MONTH);
             mDay = calendar.get(Calendar.DAY_OF_MONTH);
+
             setDate(mDay, mMonth, mYear);
         } else {
             mHour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -225,11 +248,14 @@ chipGroup.setOnClickListener(new View.OnClickListener() {
 
     private  void addTask()
     {
+
+
         View main_view = LayoutInflater.from(getContext()).inflate(R.layout.activity_main , null);
         String dateTime = txt_time.getText().toString() + "   " + txt_date.getText().toString();
         TextView title = dialog.findViewById(R.id.edit_txt_title);
         String str = title.getText().toString();
-        if(str.equals("") || txt_date.getText().toString().equals("") || txt_time.getText().toString().equals(""))
+
+        if(str.equals("") || txt_date.getText().toString().equals("") || txt_time.getText().toString().equals("") || periority==0 || cat_id.equals(""))
         {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
             alertDialog.setTitle("Error")
@@ -240,10 +266,14 @@ chipGroup.setOnClickListener(new View.OnClickListener() {
         }
         else
         {
-            int id = new Random().nextInt(Integer.MAX_VALUE);
 
+            int id = (int) calendar.getTimeInMillis() ;
+            System.out.println(id);
+            id =     Math.abs(id) %1000000;
+            System.out.println(id);
+            System.out.println(calendar.getTimeInMillis());
             TaskViewModel viewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
-            Task task = new Task(  id , title.getText().toString() ,mHour , mMinute , mDay,mMonth,mYear);
+            Task task = new Task(  id , title.getText().toString() ,mHour , mMinute , mDay,mMonth,mYear , periority,cat_id);
          viewModel.insert(task);
 task.scheduleTask(getContext() , title.getText().toString());
             dialog.cancel();
@@ -253,19 +283,6 @@ task.scheduleTask(getContext() , title.getText().toString());
 
 
 
-//    class DateandTimeField implements View.OnClickListener {
-//
-//        @Override
-//        public void onClick(View v, boolean hasFocus) {
-//            if (hasFocus) {
-//
-//                dateAndTimeFocused(v);
-//                v.clearFocus();
-//
-//            }
-//
-//        }
-//    }
 class DateandTimeField implements View.OnClickListener
 {
 
@@ -288,11 +305,10 @@ class DateandTimeField implements View.OnClickListener
             }
             if(v == add_category)
             {
-//                AddToDoFragment dialogFragment = new AddToDoFragment(r_view,customRecyclerAdapterPendingTask);
                 AddCategoryFragment addCategoryFragment = new AddCategoryFragment();
                 addCategoryFragment.show(getFragmentManager() , "Category Fragment");
-//                Log.d("called" , "called");
             }
+
         }
     }
 
@@ -309,7 +325,6 @@ class DateandTimeField implements View.OnClickListener
                 {
                     for(CategoryInfo c: categoryInfos)
                     {
-                        System.out.println("asfsfsfssfsdfs");
                         Chip chip = new Chip(dialog.getContext());
                         Drawable     drawable = ChipDrawable.createFromAttributes(requireContext(), null, 0, com.google.android.material.R.style.Widget_MaterialComponents_Chip_Filter);
 
@@ -328,7 +343,6 @@ class DateandTimeField implements View.OnClickListener
                 else {
                     Chip chip = new Chip(dialog.getContext());
                     Drawable     drawable = ChipDrawable.createFromAttributes(requireContext(), null, 0, com.google.android.material.R.style.Widget_MaterialComponents_Chip_Filter);
-
                     chip.setId(++i[0]);
                     chip.setTag(categoryInfos.get(categoryInfos.size()-1).getColor());
                     chip.setChipDrawable((ChipDrawable) drawable);

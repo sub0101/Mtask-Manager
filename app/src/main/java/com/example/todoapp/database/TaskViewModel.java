@@ -52,7 +52,7 @@ public LiveData<List<CategoryInfo>> getAllCategory(){return repositry.getAllCate
         return repositry.getTask(id);
   }
 
-
+public CategoryInfo getCategory(String name){ return repositry.getCategory(name);}
 
 
 

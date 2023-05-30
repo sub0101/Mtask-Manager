@@ -10,7 +10,8 @@
     style="@style/Widget.Material3.CardView.Elevated"
         android:layout_height="100dp"
     app:strokeWidth="1dp"
-android:outlineSpotShadowColor="@color/beige"
+android:outlineSpotShadowColor="#AEADAD"
+
 
     >
 <TextView
