@@ -2,34 +2,24 @@ package com.example.todoapp;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.todoapp.adapters.CategoryAdapter;
 import com.example.todoapp.database.CategoryInfo;
-import com.example.todoapp.database.Task;
 import com.example.todoapp.database.TaskViewModel;
 import com.example.todoapp.fragments.HomeFragment;
-import com.example.todoapp.fragments.PendingItemFragment;
 import com.example.todoapp.fragments.PofileFragment;
 import com.example.todoapp.fragments.SettingFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
